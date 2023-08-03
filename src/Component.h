@@ -8,6 +8,8 @@ namespace SDLPP {
     class Component {
     public: 
         Component(Entity* owner = nullptr) : owner{owner} {} 
+
+        virtual void Update(void) = 0; 
         virtual const char* GetType(void) = 0; 
     protected: 
         Entity* owner; 

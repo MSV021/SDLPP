@@ -1,15 +1,19 @@
 #ifndef GAME_H
 #define GAME_H 
 
+#include "Scene.h"
+#include "Utility.h"
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+
+#include <vector> 
 #include <string> 
 #include <functional> 
 
-#include "Utility.h"
-#include "Scene.h"
 
 namespace SDLPP {
+    class Scene;
     class Game {
     public: 
         static void Initialize(int windowFlags, int rendererFlags);
@@ -18,8 +22,8 @@ namespace SDLPP {
         static void SetTitle(const char* title);
         static void SetScreenDimensions(int width, int height);
         static void SetBackgroundColor(ColorRGBA color);
-        static void SetInitCallback(std::function<void()> callback); 
-        static void SetUpdateCallback(std::function<void()> callback); 
+        static void AddInitCallback(std::function<void()> callback); 
+        static void AddUpdateCallback(std::function<void()> callback); 
 
         static Scene* GetActiveScene(void);
     private: 
@@ -27,8 +31,8 @@ namespace SDLPP {
         static int screenWidth; 
         static int screenHeight; 
         static ColorRGBA backgroundColor;
-        static std::function<void()> initCallback; 
-        static std::function<void()> updateCallback;
+        static std::vector<std::function<void()>> initCallbacks; 
+        static std::vector<std::function<void()>> updateCallbacks;
 
         static Scene* activeScene; 
     };

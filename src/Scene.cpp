@@ -1,3 +1,12 @@
-#include "Scene.h" 
+#include "Game.h"
+#include "Scene.h"
 
-SDLPP::Scene::Scene(SDL_Window* window, SDL_Renderer* renderer) : window{window}, renderer{renderer} {}
+#include <functional> 
+
+ void SDLPP::Scene::AddEntity(Entity* entity) {
+    if(entity != NULL) {
+        entities.push_back(entity);
+        auto fp = std::bind(&Entity::UpdateComponents, entity);  
+        Game::AddUpdateCallback(fp);
+    }
+}

@@ -1,14 +1,15 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include "Component.h"
+
 #include <SDL2/SDL.h>
 #include <vector> 
-
-#include "Component.h"
 
 namespace SDLPP {
     class Scene;
     class Entity {
+        friend class Scene;
     public: 
         Entity(Scene* scene = nullptr);
         Entity(const Entity&) = delete;
@@ -37,6 +38,8 @@ namespace SDLPP {
         void SetScene(Scene* targetScene) { scene = targetScene; }
         Scene* GetScene(void); 
     private: 
+        void UpdateComponents(); 
+
         Scene* scene; 
         std::vector<Component*> components;
     }; 

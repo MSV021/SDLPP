@@ -18,7 +18,8 @@ namespace SDLPP {
 
         SDLPP::Vector GetPosition(void); 
         double GetRotation(void);
-
+        
+        void Update() {} 
         const char* GetType() { return "Transform"; } 
     private: 
         Vector position;

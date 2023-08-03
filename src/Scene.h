@@ -7,12 +7,13 @@
 #include <vector> 
 
 namespace SDLPP {
-    class Entity; 
     class Scene {
     public: 
-        Scene(SDL_Window*, SDL_Renderer*);
+        Scene(SDL_Window* window, SDL_Renderer* renderer) : window{window}, renderer{renderer} {}
         Scene(const Scene&) = delete;
         Scene(Scene&&) = delete;
+
+        void AddEntity(Entity* entity);
 
         SDL_Window* window;
         SDL_Renderer* renderer;

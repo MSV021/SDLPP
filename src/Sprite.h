@@ -13,6 +13,7 @@ namespace SDLPP {
 
         void Show(void); 
 
+        void Update() { Show(); }
         const char* GetType() { return "Sprite"; }
     private: 
         SDL_Texture* texture; 
