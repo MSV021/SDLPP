@@ -18,10 +18,19 @@ void SDLPP::Transform::SetRotation(double angle) {
     rotation = angle; 
 }
 
+void SDLPP::Transform::SetScale(double wm, double hm) {
+    scale.x = wm; 
+    scale.y = hm; 
+}
+
 SDLPP::Vector SDLPP::Transform::GetPosition() {
     return {position.x, position.y};
 }
 
 double SDLPP::Transform::GetRotation() {
     return rotation;
+}
+
+SDLPP::Vector SDLPP::Transform::GetScale() {
+    return {scale.x, scale.y};
 }

@@ -30,5 +30,8 @@ void SDLPP::Sprite::Show() {
     dest.y = transform->GetPosition().y; 
 
     SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h); 
+    dest.w *= transform->GetScale().x;
+    dest.h *= transform->GetScale().y;
+    
     SDL_RenderCopyEx(owner->GetScene()->renderer, texture, NULL, &dest, transform->GetRotation(), NULL, flip); 
 }
