@@ -3,12 +3,23 @@
 #include "Entity.h"
 #include "Utility.h"
 
-SDLPP::Sprite::Sprite(SDLPP::Entity* owner, const char* path, Vector pivot) : Component(owner), isVisible{true}, pivot{pivot}, flip{SDL_FLIP_NONE} {
+SDLPP::Sprite::Sprite(SDLPP::Entity* owner, const char* path, int sortingOrder, Vector pivot) 
+    : Component(owner), isVisible{true}, sortingOrder{sortingOrder}, pivot{pivot}, flip{SDL_FLIP_NONE} {
     texture = SDLPP::LoadTextureToScene(path, owner->GetScene()); 
+    owner->GetScene()->AddToRenderingQueue(this);
 }
 
 SDLPP::Sprite::~Sprite() {
     SDL_DestroyTexture(texture);
+}
+
+int SDLPP::Sprite::GetSortingOrder() {
+    return sortingOrder; 
+}
+
+void SDLPP::Sprite::SetSortingOrder(int sortingOrder) {
+    this->sortingOrder = sortingOrder; 
+    owner->GetScene()->UpdateRenderingQueue();
 }
 
 void SDLPP::Sprite::SetFlip(bool flipX, bool flipY) {

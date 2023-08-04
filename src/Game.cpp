@@ -33,6 +33,10 @@ void SDLPP::Game::Update(int rate) {
 
         for(auto callback : updateCallbacks) 
             callback();
+        for(auto sprite : activeScene->renderingQueue) {
+            if(sprite->isVisible)
+                sprite->Render();
+        }
 
         SDL_RenderPresent(activeScene->renderer);
         SDL_Delay(1000/rate);
