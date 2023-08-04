@@ -2,6 +2,7 @@
 #define ENTITY_H
 
 #include "Component.h"
+#include "Vector.h"
 
 #include <SDL2/SDL.h>
 #include <vector> 
@@ -11,7 +12,7 @@ namespace SDLPP {
     class Entity {
         friend class Scene;
     public: 
-        Entity(Scene* scene = nullptr);
+        Entity(Scene* scene = nullptr, Vector position = Vector::zero, double rotation = 0.0, Vector scale = Vector::one);
         Entity(const Entity&) = delete;
         Entity(Entity&&) = delete;
         ~Entity(void);
