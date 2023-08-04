@@ -15,8 +15,10 @@ namespace SDLPP {
         void Rotate(double angle);
 
         void SetPosition(double x, double y); 
+        void SetPosition(Vector newPosition); 
         void SetRotation(double angle); 
         void SetScale(double widthMultiplier, double heightMultiplier); 
+        void SetScale(Vector newScale); 
 
         Vector GetPosition(void); 
         double GetRotation(void);

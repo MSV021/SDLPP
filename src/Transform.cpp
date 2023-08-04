@@ -14,6 +14,10 @@ void SDLPP::Transform::SetPosition(double x, double y) {
     position.y = y; 
 }
 
+void SDLPP::Transform::SetPosition(Vector newPosition) {
+    position = newPosition; 
+}
+
 void SDLPP::Transform::SetRotation(double angle) {
     rotation = angle; 
 }
@@ -21,6 +25,10 @@ void SDLPP::Transform::SetRotation(double angle) {
 void SDLPP::Transform::SetScale(double wm, double hm) {
     scale.x = wm; 
     scale.y = hm; 
+}
+
+void SDLPP::Transform::SetScale(Vector newScale) {
+    scale = newScale;
 }
 
 SDLPP::Vector SDLPP::Transform::GetPosition() {
