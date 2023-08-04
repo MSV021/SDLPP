@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "InputSystem.h"
 
 #include <stdexcept> 
 
@@ -20,6 +21,7 @@ void SDLPP::Game::Initialize(int windowFlags, int rendererFlags) {
     SDL_Renderer* renderer = SDLPP::CreateRenderer(window, -1, rendererFlags);
     activeScene = new Scene(window, renderer);
 
+    updateCallbacks.push_back(InputSystem::Update); 
     for(auto callback : initCallbacks) 
         callback();
 }
