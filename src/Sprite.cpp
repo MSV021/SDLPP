@@ -3,7 +3,7 @@
 #include "Entity.h"
 #include "Utility.h"
 
-SDLPP::Sprite::Sprite(SDLPP::Entity* owner, const char* path) : Component(owner), flip{SDL_FLIP_NONE} {
+SDLPP::Sprite::Sprite(SDLPP::Entity* owner, const char* path, Vector pivot) : Component(owner), pivot{pivot}, flip{SDL_FLIP_NONE} {
     texture = SDLPP::LoadTextureToScene(path, owner->GetScene()); 
 }
 
@@ -25,13 +25,22 @@ void SDLPP::Sprite::SetFlip(bool flipX, bool flipY) {
 void SDLPP::Sprite::Show() {
     Transform* transform = owner->GetComponent<Transform>(); 
 
-    SDL_Rect dest;
-    dest.x = transform->GetPosition().x; 
-    dest.y = transform->GetPosition().y; 
-
+    SDL_Rect dest; 
     SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h); 
     dest.w *= transform->GetScale().x;
     dest.h *= transform->GetScale().y;
-    
+    dest.x = transform->GetPosition().x - (pivot.x * dest.w); 
+    dest.y = transform->GetPosition().y - (pivot.y * dest.h);
+
     SDL_RenderCopyEx(owner->GetScene()->renderer, texture, NULL, &dest, transform->GetRotation(), NULL, flip); 
 }
+
+const SDLPP::Vector SDLPP::Sprite::pivotUpLeft    = {0, 0};
+const SDLPP::Vector SDLPP::Sprite::pivotUp        = {0.5, 0};
+const SDLPP::Vector SDLPP::Sprite::pivotUpRight   = {1, 0};
+const SDLPP::Vector SDLPP::Sprite::pivotLeft      = {0, 0.5};
+const SDLPP::Vector SDLPP::Sprite::pivotCenter    = {0.5, 0.5};
+const SDLPP::Vector SDLPP::Sprite::pivotRight     = {1, 0.5};
+const SDLPP::Vector SDLPP::Sprite::pivotDownLeft  = {0, 1};
+const SDLPP::Vector SDLPP::Sprite::pivotDown      = {0.5, 1};
+const SDLPP::Vector SDLPP::Sprite::pivotDownRight = {1, 1};
