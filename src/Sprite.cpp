@@ -3,7 +3,7 @@
 #include "Entity.h"
 #include "Utility.h"
 
-SDLPP::Sprite::Sprite(SDLPP::Entity* owner, const char* path, Vector pivot) : Component(owner), pivot{pivot}, flip{SDL_FLIP_NONE} {
+SDLPP::Sprite::Sprite(SDLPP::Entity* owner, const char* path, Vector pivot) : Component(owner), isVisible{true}, pivot{pivot}, flip{SDL_FLIP_NONE} {
     texture = SDLPP::LoadTextureToScene(path, owner->GetScene()); 
 }
 
@@ -22,7 +22,7 @@ void SDLPP::Sprite::SetFlip(bool flipX, bool flipY) {
         flip = SDL_FLIP_NONE; 
 }
 
-void SDLPP::Sprite::Show() {
+void SDLPP::Sprite::Render() {
     Transform* transform = owner->GetComponent<Transform>(); 
 
     SDL_Rect dest; 

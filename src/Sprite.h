@@ -5,7 +5,7 @@ namespace SDLPP {
     class Sprite : public Component {
     public: 
         Sprite(Entity* owner = nullptr, SDL_Texture* texture = nullptr, Vector pivot = pivotCenter) 
-            : Component(owner), texture{texture}, flip{SDL_FLIP_NONE} {}
+            : Component(owner), isVisible{true}, texture{texture}, flip{SDL_FLIP_NONE} {}
         Sprite(Entity* owner, const char* pathToTexture, Vector pivot = pivotCenter); 
         Sprite(const Sprite&) = delete;
         Sprite(Sprite&&) = delete;  
@@ -14,8 +14,10 @@ namespace SDLPP {
         
         void SetFlip(bool flipX, bool flipY);
         
+        void Show() { isVisible = true; }
+        void Hide() { isVisible = false; }
 
-        void Update() { Show(); }
+        void Update() { if(isVisible) Render(); }
         const char* GetType() { return "Sprite"; }
 
         const static Vector pivotUpLeft;    
@@ -28,8 +30,9 @@ namespace SDLPP {
         const static Vector pivotDown;    
         const static Vector pivotDownRight;    
     private: 
-        void Show(void); 
+        void Render(void); 
 
+        bool isVisible; 
         SDL_Texture* texture; 
         SDL_RendererFlip flip; 
         Vector pivot;
