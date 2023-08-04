@@ -9,6 +9,7 @@
 
 namespace SDLPP {
     class Scene;
+    class Transform;
     class Entity {
         friend class Scene;
     public: 
@@ -38,6 +39,8 @@ namespace SDLPP {
 
         void SetScene(Scene* targetScene) { scene = targetScene; }
         Scene* GetScene(void); 
+
+        Transform* transform; 
     private: 
         void UpdateComponents(); 
 

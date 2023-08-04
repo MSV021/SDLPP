@@ -3,7 +3,7 @@
 #include "Transform.h"
 
 SDLPP::Entity::Entity(Scene* scene, Vector position, double rotation, Vector scale) : scene{scene} {
-    AddComponent<Transform>(position, rotation, scale);
+    transform = AddComponent<Transform>(position, rotation, scale);
     scene->AddEntity(this);
 } 
 
