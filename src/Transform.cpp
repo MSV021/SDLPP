@@ -7,6 +7,7 @@ void SDLPP::Transform::Move(Vector move) {
 
 void SDLPP::Transform::Rotate(double angle) {
     rotation += angle;
+    
 }
 
 void SDLPP::Transform::SetPosition(double x, double y) {

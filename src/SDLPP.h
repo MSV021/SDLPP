@@ -9,7 +9,7 @@
 
 #include "Component.h"
 #include "Transform.h"
-#include "Sprite.h"
+#include "SpriteRenderer.h"
 
 #include "Entity.h"
 

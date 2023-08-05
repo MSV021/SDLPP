@@ -31,12 +31,14 @@ void SDLPP::Game::Update(int rate) {
         SDL_SetRenderDrawColor(activeScene->renderer, BackgroundColor.r, BackgroundColor.g, BackgroundColor.b, BackgroundColor.a); 
         SDL_RenderClear(activeScene->renderer); 
 
-        for(auto callback : updateCallbacks) 
-            callback();
         for(auto sprite : activeScene->renderingQueue) {
             if(sprite->isVisible)
                 sprite->Render();
         }
+        for(auto entity : activeScene->entities) 
+            entity->UpdateComponents();
+        for(auto callback : updateCallbacks) 
+            callback();
 
         SDL_RenderPresent(activeScene->renderer);
         SDL_Delay(1000/rate);
