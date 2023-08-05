@@ -26,7 +26,7 @@ namespace SDLPP {
     protected: 
         Component(Entity* owner = nullptr) : owner{owner} {} 
         /**
-         * This function is called every frame by Game::Update if owner Entity is attached to an active Scene. 
+         * This function is called every frame if owner is part of an active Scene.
         */
         virtual void Update(void) = 0; 
 

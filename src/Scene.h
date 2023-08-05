@@ -9,19 +9,21 @@
 
 namespace SDLPP {
     class Game;
+    class SpriteRenderer; 
     /**
-     * A Scene is used to hold window and renderer contexts for entities
+     * A Scene is a container for entities, that can be loaded into the game. 
+     * 
+     * One Scene can be active at a time. If active, a Scene determines what is rendered and updated every frame. 
     */
     class Scene {
         friend class Game;
-        friend class Entity;
+        friend class Entity; 
         friend class SpriteRenderer;
-        friend SDL_Texture* LoadTextureToScene(const char*, Scene*);
     public: 
-        Scene(SDL_Window* window, SDL_Renderer* renderer) : window{window}, renderer{renderer} {}
+        Scene() {}
         Scene(const Scene&) = delete;
         Scene(Scene&&) = delete;
-    private: 
+
         /**
          * Adds entity to this scene. Every Entity must be added to an active scene in order to be processed.
          * @param entity a pointer to the Entity to be added to this scene. Note that a Scene takes ownership of its entities
@@ -32,6 +34,7 @@ namespace SDLPP {
          * @param entity a pointer to the Entity to be removed from this scene
         */
         void RemoveEntity(Entity* entity); 
+    private: 
         /**
          * Adds sprite to the this scene's rendering queue. Calls UpdateRenderingQueue() after to retain rendering queue's order.
          * @param sprite a pointer to the Sprite to be added to the rendering queue
@@ -47,8 +50,6 @@ namespace SDLPP {
         */
         void RemoveFromRenderingQueue(SDLPP::SpriteRenderer* sprite);
 
-        SDL_Window* window;
-        SDL_Renderer* renderer;
         std::vector<Entity*> entities; 
         std::vector<SpriteRenderer*> renderingQueue;
     };

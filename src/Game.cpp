@@ -7,40 +7,65 @@ std::string SDLPP::Game::Title = "Main";
 int SDLPP::Game::ScreenWidth = 1280; 
 int SDLPP::Game::ScreenHeight = 720; 
 SDLPP::ColorRGBA SDLPP::Game::BackgroundColor = SDLPP::ColorRGBA::white;
+
+int SDLPP::Game::windowFlags = SDL_WINDOW_FULLSCREEN_DESKTOP; 
+int SDLPP::Game::rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+SDL_Window* SDLPP::Game::window = nullptr;
+SDL_Renderer* SDLPP::Game::renderer = nullptr;
+
 std::vector<std::function<void()>> SDLPP::Game::initCallbacks; 
 std::vector<std::function<void()>> SDLPP::Game::updateCallbacks; 
+
+bool SDLPP::Game::initialized = false;
+bool SDLPP::Game::started = false; 
+
 SDLPP::Scene* SDLPP::Game::activeScene = nullptr;
 
-void SDLPP::Game::Initialize(int windowFlags, int rendererFlags) {
+void SDLPP::Game::Initialize() {
+    if(initialized) return; 
+    initialized = true; 
+
     if(SDL_Init(SDL_INIT_EVERYTHING) < 0) 
         throw new std::runtime_error("SDL failed to initialize!"); 
     if(!IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG)) 
         throw new std::runtime_error("SDL_image failed to initialize!");
 
-    SDL_Window* window = SDLPP::CreateWindow(Title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ScreenWidth, ScreenHeight, windowFlags);
-    SDL_Renderer* renderer = SDLPP::CreateRenderer(window, -1, rendererFlags);
-    activeScene = new Scene(window, renderer);
+    window = SDL_CreateWindow(Title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ScreenWidth, ScreenHeight, windowFlags);
+    if(!window) 
+        throw new std::runtime_error("SDL failed to create window!"); 
+    renderer = SDL_CreateRenderer(window, -1, rendererFlags);
+    if(!renderer) 
+        throw new std::runtime_error("SDL failed to create renderer!");
+
+
+    activeScene = new Scene();
 
     updateCallbacks.push_back(InputSystem::Update); 
+
     for(auto callback : initCallbacks) 
         callback();
 }
 
 void SDLPP::Game::Update(int rate) {
+    if(started) return; 
+    started = true; 
+
     while(1) {
-        SDL_SetRenderDrawColor(activeScene->renderer, BackgroundColor.r, BackgroundColor.g, BackgroundColor.b, BackgroundColor.a); 
-        SDL_RenderClear(activeScene->renderer); 
+        SDL_SetRenderDrawColor(renderer, BackgroundColor.r, BackgroundColor.g, BackgroundColor.b, BackgroundColor.a); 
+        SDL_RenderClear(renderer); 
 
         for(auto sprite : activeScene->renderingQueue) {
             if(sprite->isVisible)
                 sprite->Render();
         }
+
         for(auto entity : activeScene->entities) 
             entity->UpdateComponents();
+
         for(auto callback : updateCallbacks) 
             callback();
 
-        SDL_RenderPresent(activeScene->renderer);
+        SDL_RenderPresent(renderer);
         SDL_Delay(1000/rate);
     }
 }
@@ -55,4 +80,9 @@ void SDLPP::Game::AddUpdateCallback(std::function<void()> callback) {
 
 SDLPP::Scene* SDLPP::Game::GetActiveScene() {
     return activeScene; 
+}
+
+SDL_Texture* SDLPP::Game::LoadTexture(const char* path) {
+    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "loading %s", path);
+    return IMG_LoadTexture(renderer, path);   
 }

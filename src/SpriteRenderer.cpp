@@ -1,11 +1,12 @@
 #include "SpriteRenderer.h"
+#include "Game.h"
 #include "Transform.h"
 #include "Entity.h"
 #include "Utility.h"
 
 SDLPP::SpriteRenderer::SpriteRenderer(SDLPP::Entity* owner, const char* path, int sortingOrder, Vector pivot) 
     : Component(owner), isVisible{true}, sortingOrder{sortingOrder}, pivot{pivot}, flip{SDL_FLIP_NONE} {
-    texture = SDLPP::LoadTextureToScene(path, owner->GetScene()); 
+    texture = Game::LoadTexture(path); 
     owner->GetScene()->AddToRenderingQueue(this);
 }
 
@@ -43,7 +44,7 @@ void SDLPP::SpriteRenderer::Render() {
     dest.x = transform->GetPosition().x - (pivot.x * dest.w); 
     dest.y = transform->GetPosition().y - (pivot.y * dest.h);
 
-    SDL_RenderCopyEx(owner->GetScene()->renderer, texture, NULL, &dest, transform->GetRotation(), NULL, flip); 
+    SDL_RenderCopyEx(Game::GetRenderer(), texture, NULL, &dest, transform->GetRotation(), NULL, flip); 
 }
 
 const SDLPP::Vector SDLPP::SpriteRenderer::pivotUpLeft    = {0, 0};

@@ -11,7 +11,7 @@ namespace SDLPP {
     class Scene;
     class Transform;
     /**
-     * Entities represent any sort of Objects that reside in SDLPP Scenes
+     * Entities represent any sort of objects that reside in SDLPP Scenes.  
      * 
      * Every Entity is its components. It's a blank slate to hold different 
      * combination of components that define its behaviour. 
@@ -19,7 +19,6 @@ namespace SDLPP {
     */
     class Entity {
         friend class Game;
-        friend class Scene;
     public: 
         Entity(Scene* scene = nullptr, Vector position = Vector::zero, double rotation = 0.0, Vector scale = Vector::one);
         Entity(const Entity&) = delete;
@@ -61,6 +60,8 @@ namespace SDLPP {
          * Returns a pointer to the current scene this entity belongs to
         */
         Scene* GetScene(void); 
+
+        void Clear(void); 
 
         Transform* transform; 
     private: 
