@@ -40,8 +40,6 @@ void SDLPP::Game::Initialize() {
 
     activeScene = new Scene();
 
-    updateCallbacks.push_back(InputSystem::Update); 
-
     for(auto callback : initCallbacks) 
         callback();
 }
@@ -61,6 +59,8 @@ void SDLPP::Game::Update(int rate) {
 
         for(auto entity : activeScene->entities) 
             entity->UpdateComponents();
+
+        InputSystem::Update();
 
         for(auto callback : updateCallbacks) 
             callback();
