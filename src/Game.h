@@ -63,6 +63,7 @@ namespace SDLPP {
         static SDL_Texture* LoadTexture(const char* path);
 
         static std::string Title;
+        static bool Fullscreen; 
         static int ScreenWidth; 
         static int ScreenHeight; 
         static ColorRGBA BackgroundColor;

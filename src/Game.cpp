@@ -4,11 +4,12 @@
 #include <stdexcept> 
 
 std::string SDLPP::Game::Title = "Main"; 
+bool SDLPP::Game::Fullscreen = false; 
 int SDLPP::Game::ScreenWidth = 1280; 
 int SDLPP::Game::ScreenHeight = 720; 
 SDLPP::ColorRGBA SDLPP::Game::BackgroundColor = SDLPP::ColorRGBA::white;
 
-int SDLPP::Game::windowFlags = SDL_WINDOW_FULLSCREEN_DESKTOP; 
+int SDLPP::Game::windowFlags = 0;
 int SDLPP::Game::rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 SDL_Window* SDLPP::Game::window = nullptr;
 SDL_Renderer* SDLPP::Game::renderer = nullptr;
@@ -25,6 +26,9 @@ void SDLPP::Game::Initialize() {
     if(initialized) return; 
     initialized = true; 
 
+    if(Fullscreen) 
+        windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+
     if(SDL_Init(SDL_INIT_EVERYTHING) < 0) 
         throw new std::runtime_error("SDL failed to initialize!"); 
     if(!IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG)) 
@@ -37,6 +41,8 @@ void SDLPP::Game::Initialize() {
     if(!renderer) 
         throw new std::runtime_error("SDL failed to create renderer!");
 
+    if(Fullscreen) 
+        SDL_GetRendererOutputSize(renderer, &ScreenWidth, &ScreenHeight);
 
     activeScene = new Scene();
 
@@ -45,6 +51,9 @@ void SDLPP::Game::Initialize() {
 }
 
 void SDLPP::Game::Update(int rate) {
+    static long then; 
+    static float remainder;
+
     if(started) return; 
     started = true; 
 
@@ -66,7 +75,27 @@ void SDLPP::Game::Update(int rate) {
             callback();
 
         SDL_RenderPresent(renderer);
-        SDL_Delay(1000/rate);
+
+        long wait, frameTime;
+
+        wait = 16 + remainder;
+
+        remainder -= (int)remainder;
+
+        frameTime = SDL_GetTicks() - then;
+
+        wait -= frameTime;
+
+        if (wait < 1)
+        {
+            wait = 1;
+        }
+
+        SDL_Delay(wait);
+
+        remainder += 0.667;
+
+        then = SDL_GetTicks();
     }
 }
 
