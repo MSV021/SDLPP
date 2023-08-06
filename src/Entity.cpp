@@ -11,18 +11,19 @@ SDLPP::Entity::Entity(Scene* scene, Vector position, double rotation, Vector sca
 } 
 
 SDLPP::Entity::~Entity() {
-    for(auto c : components) 
-        delete c; 
+    Clear();
 }
 
 void SDLPP::Entity::SetScene(Scene* targetScene) {
     SpriteRenderer* sprite = GetComponent<SpriteRenderer>();
-    if(sprite != nullptr) {
-        scene->RemoveFromRenderingQueue(sprite);
-        targetScene->AddToRenderingQueue(sprite);
+    if(scene != nullptr) {
+        if(sprite != nullptr) 
+            scene->RemoveFromRenderingQueue(sprite);
+        scene->RemoveEntity(this);
     }
 
-    scene->RemoveEntity(this);
+    if(sprite != nullptr) 
+        targetScene->AddToRenderingQueue(sprite);    
     targetScene->AddEntity(this);
 
     scene = targetScene; 
@@ -38,6 +39,8 @@ void SDLPP::Entity::Clear() {
         scene->RemoveFromRenderingQueue(sprite);    
 
     scene->RemoveEntity(this);
+    scene = nullptr;
+
     for(auto c : components) 
         delete c; 
     

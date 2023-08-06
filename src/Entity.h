@@ -61,6 +61,10 @@ namespace SDLPP {
         */
         Scene* GetScene(void); 
 
+        /**
+         * Removes every component from this entity and also removes it from its current scene.
+         * After calling this function, entity can be added to any scene and be used again.
+        */
         void Clear(void); 
 
         Transform* transform; 
