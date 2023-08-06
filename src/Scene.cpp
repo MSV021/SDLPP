@@ -28,10 +28,8 @@ void SDLPP::Scene::UpdateRenderingQueue() {
 
 void SDLPP::Scene::RemoveFromRenderingQueue(SpriteRenderer* sprite) {
     auto iter = std::find(renderingQueue.begin(), renderingQueue.end(), sprite); 
-    if(iter != renderingQueue.end()) {
+    if(iter != renderingQueue.end()) 
         renderingQueue.erase(iter); 
-        UpdateRenderingQueue();
-    }
 }
 
 

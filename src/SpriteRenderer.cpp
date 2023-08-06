@@ -35,16 +35,14 @@ void SDLPP::SpriteRenderer::SetFlip(bool flipX, bool flipY) {
 }
 
 void SDLPP::SpriteRenderer::Render() {
-    Transform* transform = owner->GetComponent<Transform>(); 
-
     SDL_Rect dest; 
     SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h); 
-    dest.w *= transform->GetScale().x;
-    dest.h *= transform->GetScale().y;
-    dest.x = transform->GetPosition().x - (pivot.x * dest.w); 
-    dest.y = transform->GetPosition().y - (pivot.y * dest.h);
+    dest.w *= owner->transform->GetScale().x;
+    dest.h *= owner->transform->GetScale().y;
+    dest.x = owner->transform->GetPosition().x - (pivot.x * dest.w); 
+    dest.y = owner->transform->GetPosition().y - (pivot.y * dest.h);
 
-    SDL_RenderCopyEx(Game::GetRenderer(), texture, NULL, &dest, transform->GetRotation(), NULL, flip); 
+    SDL_RenderCopyEx(Game::GetRenderer(), texture, NULL, &dest, owner->transform->GetRotation(), NULL, flip); 
 }
 
 const SDLPP::Vector SDLPP::SpriteRenderer::pivotUpLeft    = {0, 0};
